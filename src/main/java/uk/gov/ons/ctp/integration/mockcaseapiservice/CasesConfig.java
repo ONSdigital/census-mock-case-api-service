@@ -93,6 +93,17 @@ public class CasesConfig {
   }
 
   /**
+   * modify data in the case maps from a list of Cases
+   *
+   * @param caseList - list of cases
+   */
+  public void modifyData(final List<CaseContainerDTO> caseList) throws CTPException {
+    for (CaseContainerDTO caseDetails : caseList) {
+      modifyMaps(caseDetails);
+    }
+  }
+
+  /**
    * Reset the data maps back to the original JSON
    *
    * @throws IOException - thrown
@@ -110,6 +121,28 @@ public class CasesConfig {
     synchronized (caseRefMap) {
       caseRefMap.clear();
       setCases(cases);
+    }
+  }
+
+  private void modifyMaps(CaseContainerDTO caseDetails) {
+    synchronized (caseUUIDMap) {
+      caseUUIDMap.replace(caseDetails.getId().toString(), caseDetails);
+    }
+    synchronized (caseRefMap) {
+      caseRefMap.replace(caseDetails.getCaseRef(), caseDetails);
+    }
+    synchronized (caseUprnMap) {
+      ArrayList casesForUprn;
+      if (!caseUprnMap.containsKey(caseDetails.getUprn())) {
+        caseUprnMap.put(caseDetails.getUprn(), new ArrayList<>());
+      }
+      casesForUprn = (ArrayList) caseUprnMap.get(caseDetails.getUprn());
+      for (int i = 0; i < casesForUprn.size(); i++) {
+        System.out.println("The case found for the uprn " + casesForUprn.get(i));
+      }
+    }
+    synchronized (eventMap) {
+      // eventMap.clear();
     }
   }
 

@@ -250,6 +250,23 @@ public final class CaseServiceMockStub implements CTPEndpoint {
     }
   }
 
+  /**
+   * Post a list of Cases in order to modify those in the case maps driving the responses here.
+   *
+   * @param requestBody - a list of cases
+   * @return - response confirming post.
+   */
+  @RequestMapping(value = "/data/cases/modify", method = RequestMethod.POST)
+  @ResponseStatus(value = HttpStatus.OK)
+  public ResponseEntity<ResponseDTO> modifyCaseData(@RequestBody List<CaseContainerDTO> requestBody)
+      throws CTPException {
+
+    log.with("requestBody", requestBody).info("Entering POST modifyCData");
+    casesConfig.modifyData(requestBody);
+
+    return ResponseEntity.ok(createResponseDTO("MockCaseModifyService"));
+  }
+
   private ResponseDTO createResponseDTO(final String id) {
     final ResponseDTO responseDTO = new ResponseDTO();
     responseDTO.setId(id);
