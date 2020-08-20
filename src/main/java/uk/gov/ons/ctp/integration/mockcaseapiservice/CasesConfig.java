@@ -99,6 +99,7 @@ public class CasesConfig {
    */
   public void modifyData(final List<CaseContainerDTO> caseList) throws CTPException {
     for (CaseContainerDTO caseDetails : caseList) {
+      checkCaseExists(caseDetails.getId().toString());
       modifyMaps(caseDetails);
     }
   }
@@ -121,6 +122,14 @@ public class CasesConfig {
     synchronized (caseRefMap) {
       caseRefMap.clear();
       setCases(cases);
+    }
+  }
+
+  private void checkCaseExists(String strCaseId) throws CTPException {
+    if (!caseUUIDMap.containsKey(strCaseId)) {
+      throw new CTPException(
+          CTPException.Fault.BAD_REQUEST,
+          "Case cannot be modified as UUID not found: " + strCaseId);
     }
   }
 
