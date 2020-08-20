@@ -151,7 +151,7 @@ public class CasesConfig {
       }
     }
     synchronized (eventMap) {
-      // eventMap.clear();
+      eventMap.replace(caseDetails.getId().toString(), caseDetails.getCaseEvents());
     }
   }
 
