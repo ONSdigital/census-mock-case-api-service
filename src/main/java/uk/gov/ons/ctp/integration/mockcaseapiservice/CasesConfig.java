@@ -132,20 +132,14 @@ public class CasesConfig {
       caseRefMap.replace(caseDetails.getCaseRef(), caseDetails);
     }
     synchronized (caseUprnMap) {
-      ArrayList<CaseContainerDTO> casesForUprn;
-      if (!caseUprnMap.containsKey(caseDetails.getUprn())) {
-        caseUprnMap.put(caseDetails.getUprn(), new ArrayList<>());
-      }
-      casesForUprn = (ArrayList<CaseContainerDTO>) caseUprnMap.get(caseDetails.getUprn());
+      ArrayList<CaseContainerDTO> casesForUprn =
+          (ArrayList<CaseContainerDTO>) caseUprnMap.get(caseDetails.getUprn());
       for (int i = 0; i < casesForUprn.size(); i++) {
-        System.out.println("The case found for the uprn " + casesForUprn.get(i));
         CaseContainerDTO caseFound = casesForUprn.get(i);
         if (caseFound.getId().toString().equals(caseDetails.getId().toString())) {
-          System.out.println("I think we have a match for case number: " + i);
           casesForUprn.set(i, caseDetails);
         }
       }
-      //      caseUprnMap.replace(caseDetails.getUprn(), casesForUprn);
     }
     synchronized (eventMap) {
       // eventMap.clear();
